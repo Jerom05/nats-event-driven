@@ -2,6 +2,8 @@ const express = require('express')
 const routes = require('./routes')
 const natsWrapper = require('./nats-wrapper')
 const listener = require('./events/listener')
+const dotenv = require('dotenv')
+dotenv.config()
 
 const app = express()
 
@@ -12,7 +14,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use('/service-a', routes)
 
 const start = async() => {
-  await natsWrapper.connect('test-cluster', 'service-a', 'http://localhost:4222')
+  await natsWrapper.connect(process.env.NATS_CLUSTER_ID, process.env.NATS_CLIENT_ID, process.env.NATS_URL)
   
   listener.listen('service-b:created', 'service-a-group')
   listener.listen('service-b:updated', 'service-a-group')
