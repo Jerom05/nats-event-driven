@@ -9,3 +9,37 @@ services:
       '-m', '8222',
       '-cid', 'test-cluster'
     ]
+
+  service-a:
+    build: ./service-a
+    ports:
+      - '3000:3000'
+    depends_on:
+      - nats
+    environment:
+      - NATS_URL=nats://nats:4222
+      - NATS_CLUSTER_ID=test-cluster
+      - NATS_CLIENT_ID=service-a
+  
+  service-b:
+    build: ./service-b
+    ports:
+      - '4000:4000'
+    depends_on:
+      - nats
+    environment:
+      - NATS_URL=nats://nats:4222
+      - NATS_CLUSTER_ID=test-cluster
+      - NATS_CLIENT_ID=service-b
+  
+  service-c:
+    build: ./service-c
+    ports:
+      - '5000:5000'
+    depends_on:
+      - nats
+    environment:
+      - NATS_URL=nats://nats:4222
+      - NATS_CLUSTER_ID=test-cluster
+      - NATS_CLIENT_ID=service-c
+  
