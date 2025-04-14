@@ -43,3 +43,13 @@ services:
       - NATS_CLUSTER_ID=test-cluster
       - NATS_CLIENT_ID=service-c
   
+  nginx:
+    image: nginx
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - service-a
+      - service-b
+      - service-c
